@@ -1,0 +1,74 @@
+scalar DateTime
+
+type Query {
+  games: [Game]!
+  developers: [Developer]!
+}
+
+type Mutation {
+  createGame(data: GameCreateInput!): Game!
+  createDeveloper(data: DeveloperCreateInput!): Developer!
+}
+
+interface BaseModel {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  deletedAt: DateTime
+}
+
+type Review {
+  createdAt: DateTime!
+  updatedAt: DateTime
+  deletedAt: DateTime
+
+  type: Boolean!
+  text: String!
+}
+
+type Developer implements BaseModel {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  deletedAt: DateTime
+  name: String!
+  description: String!
+  gamesId: [String]!
+  games: [Game]!
+}
+
+type Attributes {
+  description: String
+  relaseDate: DateTime
+  reviews: [Review]
+}
+
+type Game implements BaseModel {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  deletedAt: DateTime
+
+  developersId: [String]!
+  developers: [Developer]!
+  name: String!
+  sku: String!
+  price: Float!
+  image: String!
+  attributes: Attributes!
+}
+
+input GameCreateInput {
+  name: String!
+  price: Float!
+  image: String!
+  sku: String!
+  description: String
+  relaseDate: DateTime
+  developersId: [ID]!
+}
+
+input DeveloperCreateInput {
+  name: String!
+  description: String!
+}

@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Game {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime?   @updatedAt
+  deletedAt    DateTime?
+  name         String
+  sku          String      @unique
+  price        Float
+  image        String
+  attributes   Attributes
+  developersId String[]    @db.ObjectId
+  developers   Developer[] @relation(fields: [developersId], references: [id])
+}
+
+type Attributes {
+  description String
+  relaseDate  DateTime?
+  reviews     Review[]
+}
+
+type Review {
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+
+  type Boolean
+  text String
+}
+
+model Developer {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+
+  name        String
+  description String
+  gamesId     String[] @db.ObjectId
+  games       Game[]   @relation(fields: [gamesId], references: [id])
+}
+
+model User {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  username  String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+}

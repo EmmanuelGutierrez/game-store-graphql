@@ -8,7 +8,9 @@
     "client",
     "packages/*"
   ],
-  "scripts": {},
+  "scripts": {
+    "dev": "npm run --prefix api dev"
+  },
   "author": "@jonalvarezz",
   "license": "MIT",
   "prettier": {
